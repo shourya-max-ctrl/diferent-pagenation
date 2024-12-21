@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagination Example</title>
+  <style>
+    /* Internal CSS for Pagination */
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .content {
+      margin: 20px;
+    }
+
+    #item-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #item-list li {
+      margin: 5px 0;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+    }
+
+    .pagination {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    #page-number {
+      margin: 0 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <ul id="item-list">
+      <!-- List items will be inserted here -->
+    </ul>
+  </div>
+
+  <div class="pagination">
+    <button id="prev-btn">Previous</button>
+    <span id="page-number">Page 1</span>
+    <button id="next-btn">Next</button>
+  </div>
+
+  <script>
+    // JavaScript for Pagination Logic
+
+    const itemsPerPage = 5;
+    const totalItems = 30; // total number of items
+    let currentPage = 1;
+
+    const itemList = document.getElementById('item-list');
+    const prevButton = document.getElementById('prev-btn');
+    const nextButton = document.getElementById('next-btn');
+    const pageNumber = document.getElementById('page-number');
+
+    // Generate items for the current page
+    function generateItems() {
+      itemList.innerHTML = '';
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = Math.min(start + itemsPerPage, totalItems);
+
+      for (let i = start; i < end; i++) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Item ${i + 1}`;
+        itemList.appendChild(listItem);
+      }
+
+      // Update the page number
+      pageNumber.textContent = `Page ${currentPage}`;
+
+      // Disable buttons based on the current page
+      prevButton.disabled = currentPage === 1;
+      nextButton.disabled = currentPage * itemsPerPage >= totalItems;
+    }
+
+    // Go to the previous page
+    prevButton.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        generateItems();
+      }
+    });
+
+    // Go to the next page
+    nextButton.addEventListener('click', () => {
+      if (currentPage * itemsPerPage < totalItems) {
+        currentPage++;
+        generateItems();
+      }
+    });
+
+    // Initialize the page
+    generateItems();
+  </script>
+</body>
+</html>
